@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+    <!-- The CardView needs to be wrapped to ensure spacing is applied correctly. -->
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            app:cardUseCompatPadding="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:padding="10dp">
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".3"
+                android:orientation="horizontal"
+                android:padding="10dp">
+            <ImageView
+                    android:id="@+id/imagview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+
+            />
+        </LinearLayout>
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".7"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    >
+                <TextView
+                        android:id="@+id/dateTV"
+                        style="@style/CRSW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12/07/2015"
+                />
+
+                <TextView
+                        android:id="@+id/tempcTV"
+                        style="@style/CXLB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12C"
+                />
+                <TextView
+                        android:id="@+id/conditiontextTV"
+                        style="@style/CLB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Partly clouded"
+                />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
