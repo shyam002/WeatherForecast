@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             PermissionsRequestCode -> {
                 if (granted) {
                     Log.v(TAG, "permission granted")
+                    getLastLocation()
                 } else {
                     setPermission()
                 }
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful && task.result != null) {
                     mLastLocation = task.result
 
+                    callWeatherForecast(mLastLocation!!.latitude,mLastLocation!!.longitude)
                     println("(mLastLocation)!!.latitude="+(mLastLocation)!!.latitude)
                     println("(mLastLocation)!!.longitude="+(mLastLocation)!!.longitude)
                 } else {
@@ -65,6 +70,16 @@ class MainActivity : AppCompatActivity() {
 
                 }
             }
+    }
+
+    private fun callWeatherForecast(lat:Double,long:Double) {
+        val apiService = ApixuWeatherApiService()
+        val q = "$lat,$long"
+        GlobalScope.launch(Dispatchers.Main) {
+            val forecastResponse = apiService.getFutureWeather(q,4).await()
+            println("current="+forecastResponse.toString())
+            println("current="+forecastResponse.current.toString())
+        }
     }
 
 }
