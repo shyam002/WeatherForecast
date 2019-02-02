@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
+    <string name="permssionmsg">Please allow following permissions, denying permission will cause it to no longer function as intended.\n</string>
+    <string name="bullet">&#8226;</string>
 </resources>
