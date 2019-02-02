@@ -30,6 +30,8 @@ class AskRunTimePermission(internal var activity: Activity) {
                                 " "
                             )
                         }
+                    }else{
+                        return true
                     }
                 }
                 if (!perlist.isEmpty()) {

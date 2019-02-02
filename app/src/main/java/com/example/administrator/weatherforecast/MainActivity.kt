@@ -1,33 +1,37 @@
 package com.example.administrator.weatherforecast
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
+import android.location.Location
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Toast
-import java.util.ArrayList
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     val TAG = MainActivity::class.java.simpleName
-    private val PermissionsRequestCode = 123
+    val PermissionsRequestCode = 123
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
+    protected var mLastLocation: Location? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (setPermission()) {
-            Log.v(TAG,"Already have permission")
+            Log.v(TAG, "Already have permission")
+            getLastLocation()
         }
     }
 
     fun setPermission(): Boolean {
-            val askRunTimePermission = AskRunTimePermission(this)
-            val perlist = ArrayList<String>()
-            perlist.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            perlist.add(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            return askRunTimePermission.setPermissions(perlist, PermissionsRequestCode)
+        val askRunTimePermission = AskRunTimePermission(this)
+        val perlist = ArrayList<String>()
+        perlist.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        perlist.add(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        return askRunTimePermission.setPermissions(perlist, PermissionsRequestCode)
     }
 
     override fun onRequestPermissionsResult(
@@ -39,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             PermissionsRequestCode -> {
                 if (granted) {
-                    Log.v(TAG,"permission granted")
+                    Log.v(TAG, "permission granted")
                 } else {
                     setPermission()
                 }
@@ -47,5 +51,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        mFusedLocationClient!!.lastLocation
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful && task.result != null) {
+                    mLastLocation = task.result
+
+                    println("(mLastLocation)!!.latitude="+(mLastLocation)!!.latitude)
+                    println("(mLastLocation)!!.longitude="+(mLastLocation)!!.longitude)
+                } else {
+                    Log.w(TAG, "getLastLocation:exception", task.exception)
+
+                }
+            }
+    }
 
 }
